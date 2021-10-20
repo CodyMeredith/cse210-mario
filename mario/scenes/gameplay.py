@@ -21,8 +21,10 @@ class GameplayView(arcade.View):
         self.physics_engine = None
         self.scene = None
         self.player_sprite = None
+        self.camera = None
     
     def setup(self):
+        self.camera = arcade.Camera(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
         self.scene = arcade.Scene()
 
         self.scene.add_sprite_list("Player")
@@ -57,8 +59,8 @@ class GameplayView(arcade.View):
 
     def on_draw(self):
         """Render the screen."""
-
         arcade.start_render()
+        self.camera.use()
         self.scene.draw(pixelated = True)
 
     def on_key_press(self, key, modifiers):
@@ -80,8 +82,22 @@ class GameplayView(arcade.View):
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
 
+    def ceneter_camera_to_player(self):
+        screen_center_x = self.player_sprite.center_x - (self.camera.viewport_width / 2)
+        screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
+
+        if screen_center_x < 0:
+            screen_center_x = 0
+        if screen_center_y < 0:
+            screen_center_y = 0
+        player_centered = screen_center_x, screen_center_y
+
+        self.camera.move_to(player_centered)
+
     def on_update(self, delta_time):
         """Movement and game logic"""
 
         # Move the player with the physics engine
         self.physics_engine.update()
+
+        self.ceneter_camera_to_player()
