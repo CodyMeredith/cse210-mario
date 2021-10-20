@@ -6,28 +6,25 @@ from scenes.how_to_play import HowToPlayView
         
 class StartView(arcade.View):
     """ Class that manages the 'menu' view. """
-    
+    def __init__(self) -> None:
+        super().__init__()
+         # Set our display timer
+        self.display_timer = 3.0
+
+        # Are we showing the instructions?
+        self.show_instructions = False
 
     def on_show(self):
         """ Called when switching to this view"""
         arcade.set_background_color(arcade.color.SKY_BLUE)
         # Find the title image in the images folder
-        title_image_path = cse210-mario/mario/sprites/image_1.png"
+        title_image_path = constants.PATH + "/image_1.png"
 
         # Load our title image
         self.title_image = arcade.load_texture(title_image_path)
 
         # Are we showing the instructions?
         self.show_instructions = False
-
-    def on_update(self, delta_time: float) -> None:
-        """Manages the timer to toggle the instructions
-
-        Arguments:
-            delta_time -- time passed since last update
-        """
-        # Toggle whether to show the instructions
-        self.show_instructions = not self.show_instructions
 
     def on_draw(self):
 
@@ -52,6 +49,23 @@ class StartView(arcade.View):
                 color=arcade.color.BLACK,
                 font_size=40,
             )
+    def on_update(self, delta_time: float) -> None:
+        """Manages the timer to toggle the instructions
+
+        Arguments:
+            delta_time -- time passed since last update
+        """
+        self.display_timer -= delta_time
+
+        # If the timer has run out, we toggle the instructions
+        if self.display_timer < 0:
+
+            # Toggle whether to show the instructions
+            self.show_instructions = not self.show_instructions
+
+            # And reset the timer so the instructions flash slowly
+            self.display_timer = 1.0
+
 
     def on_key_press(self, key: int, modifiers: int) -> None:
         """Resume the game when the user presses ESC again
