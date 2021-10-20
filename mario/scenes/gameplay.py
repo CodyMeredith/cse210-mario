@@ -1,5 +1,6 @@
 import arcade
 from game import constants
+from scenes.pauseview import PauseView
 
 class GameplayView(arcade.View):
     """
@@ -30,8 +31,8 @@ class GameplayView(arcade.View):
         self.scene.add_sprite_list("Player")
         self.scene.add_sprite_list("Floor", use_spatial_hash = True)
 
-        player_sprite_img = "cse210-mario/mario/sprites/mario_small_idle.png"
-        floor_sprite_img = "cse210-mario/mario/sprites/floor.png"
+        player_sprite_img = constants.SPRITE_DIR / "mario_small_idle.png"
+        floor_sprite_img = constants.SPRITE_DIR / "floor.png"
         
         #Mario
         self.player_sprite = arcade.Sprite(player_sprite_img, constants.CHARACTER_SCALING)

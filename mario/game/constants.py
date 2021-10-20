@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 # Constants
 SCREEN_WIDTH = 1280
@@ -26,4 +27,4 @@ BOTTOM_VIEWPORT_MARGIN = 100
 TOP_VIEWPORT_MARGIN = 100
 
 #Path
-PATH = os.path.dirname(os.path.abspath(__file__))
+SPRITE_DIR = Path(__file__).parent.parent / "sprites"

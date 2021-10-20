@@ -18,7 +18,7 @@ class StartView(arcade.View):
         """ Called when switching to this view"""
         arcade.set_background_color(arcade.color.SKY_BLUE)
         # Find the title image in the images folder
-        title_image_path = constants.PATH + "/image_1.png"
+        title_image_path = constants.SPRITE_DIR / "SMB_logo.png"
 
         # Load our title image
         self.title_image = arcade.load_texture(title_image_path)
