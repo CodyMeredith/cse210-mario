@@ -1,17 +1,16 @@
 import arcade
 from game import constants
 from scenes.gameplay import GameplayView
-from scenes.how_to_play import HowToPlayView
 
-        
 class StartView(arcade.View):
     """ Class that manages the 'menu' view. """
     def __init__(self) -> None:
         super().__init__()
          # Set our display timer
-        self.display_timer = 3.0
+        self.display_timer = 1.5
 
         # Are we showing the instructions?
+        self.show_text = False
         self.show_instructions = False
 
     def on_show(self):
@@ -41,14 +40,24 @@ class StartView(arcade.View):
         )
 
         # Should we show our instructions?
-        if self.show_instructions:
-            arcade.draw_text(
-                "Enter to Start | I for Instructions",
-                start_x=300,
-                start_y=200,
-                color=arcade.color.BLACK,
-                font_size=40,
-            )
+        if self.show_text:
+            if not self.show_instructions:
+                arcade.draw_text(
+                    "Enter to Start | I for Instructions",
+                    start_x=300,
+                    start_y=200,
+                    color=arcade.color.BLACK,
+                    font_size=40,
+                )
+            else:
+                arcade.draw_text("How to Play", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2 - 125,
+                    arcade.color.BLACK, font_size = 40, anchor_x = "center")
+                arcade.draw_text("->Use left and right arrow keys to move", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2 - 175,
+                    arcade.color.BLACK, font_size= 20, anchor_x = "center")
+                arcade.draw_text("->Spacebar to jump", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2 - 225,
+                    arcade.color.BLACK, font_size= 20, anchor_x = "center")
+                arcade.draw_text("->Press Enter to play", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2 - 275,
+                    arcade.color.BLACK, font_size= 20, anchor_x = "center")
             
     def on_update(self, delta_time: float) -> None:
         """Manages the timer to toggle the instructions
@@ -59,11 +68,9 @@ class StartView(arcade.View):
         self.display_timer -= delta_time
 
         # If the timer has run out, we toggle the instructions
-        if self.display_timer < 0:
-
+        if self.display_timer < 0 and self.show_instructions == False:
             # Toggle whether to show the instructions
-            self.show_instructions = not self.show_instructions
-
+            self.show_text = not self.show_text
             # And reset the timer so the instructions flash slowly
             self.display_timer = 1.0
 
@@ -81,5 +88,6 @@ class StartView(arcade.View):
             game_view.setup()
             self.window.show_view(game_view)
         elif key == arcade.key.I:
-            instructions_view = HowToPlayView()
-            self.window.show_view(instructions_view)
+            self.show_text = True
+            self.show_instructions = True
+            self.on_draw()
