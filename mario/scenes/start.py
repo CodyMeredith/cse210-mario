@@ -49,6 +49,7 @@ class StartView(arcade.View):
                 color=arcade.color.BLACK,
                 font_size=40,
             )
+            
     def on_update(self, delta_time: float) -> None:
         """Manages the timer to toggle the instructions
 
