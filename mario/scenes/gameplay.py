@@ -1,8 +1,7 @@
 import arcade
 from game import constants
 from scenes.pauseview import PauseView
-from scenes.loss import LossView
-from scenes.win import WinView
+from scenes.level_complete import LevelCompelteView
 
 class GameplayView(arcade.View):
     """
@@ -29,11 +28,12 @@ class GameplayView(arcade.View):
         self.tile_map = None
 
         self.score = 0
-        self.end_of_map = 0
+        self.flag_location = 0
 
         self.collect_coint_sound = arcade.load_sound(constants.SOUND_DIR / "collect_coin.wav")
         self.jump_sound = arcade.load_sound(constants.SOUND_DIR / "jump_small.wav")
         self.gameover_sound = arcade.load_sound(constants.SOUND_DIR / "gameover.wav")
+        self.level_clear_sound = arcade.load_sound(constants.SOUND_DIR / "level_clear.wav")
     
     def setup(self):
         # Set up the Cameras
@@ -58,6 +58,7 @@ class GameplayView(arcade.View):
 
         # Initiate Variables
         self.score = 0
+        self.flag_location = 198.5 * constants.TILE_SIZE
 
         #Mario
         player_sprite_img = constants.SPRITE_DIR / "mario_small_idle.png"
@@ -65,9 +66,6 @@ class GameplayView(arcade.View):
         self.player_sprite.left = constants.PLAYER_START_X
         self.player_sprite.top = constants.PLAYER_START_Y
         self.scene.add_sprite("Player", self.player_sprite)
-
-        # Calculate right edge of map
-        self.end_of_map = self.tile_map.tiled_map.map_size.width * constants.GRID_PIXEL_SIZE
 
         # Set map background color
         if self.tile_map.tiled_map.background_color:
@@ -146,9 +144,14 @@ class GameplayView(arcade.View):
             # self.player_sprite.left = constants.PLAYER_START_X
             # self.player_sprite.top = constants.PLAYER_START_Y
             arcade.play_sound(self.gameover_sound)
-            loss = LossView(self)
+            loss = LevelCompelteView(self, "GAME OVER")
             self.window.show_view(loss)
 
+        # Check if player reached the end of the level
+        if self.player_sprite.center_x >= self.flag_location:
+            arcade.play_sound(self.level_clear_sound)
+            win = LevelCompelteView(self, "LEVEL CLEAR")
+            self.window.show_view(win)
 
         # Center the camera on the player
         self.ceneter_camera_to_player()
