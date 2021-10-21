@@ -1,6 +1,8 @@
 import arcade
 from game import constants
 from scenes.pauseview import PauseView
+from scenes.loss import LossView
+from scenes.win import WinView
 
 class GameplayView(arcade.View):
     """
@@ -141,9 +143,12 @@ class GameplayView(arcade.View):
 
         # Check if player fell off the map
         if self.player_sprite.top < - 100:
-            self.player_sprite.left = constants.PLAYER_START_X
-            self.player_sprite.top = constants.PLAYER_START_Y
+            # self.player_sprite.left = constants.PLAYER_START_X
+            # self.player_sprite.top = constants.PLAYER_START_Y
             arcade.play_sound(self.gameover_sound)
+            loss = LossView(self)
+            self.window.show_view(loss)
+
 
         # Center the camera on the player
         self.ceneter_camera_to_player()

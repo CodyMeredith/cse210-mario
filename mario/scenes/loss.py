@@ -1,15 +1,44 @@
 import arcade
+from game import constants
 
 class LossView(arcade.View):
-    """ Class to manage the game over view """
-    def on_show(self):
-        """ Called when switching to this view"""
-        pass
+    """Shown when the game is paused"""
 
-    def on_draw(self):
-        """ Draw the game over view """
-        pass
+    def __init__(self, game_view: arcade.View) -> None:
+        """Create the pause screen"""
+        # Initialize the parent
+        super().__init__()
 
-    def on_key_press(self, key, _modifiers):
-        """ Input control for this scene """
-        pass
+        # Store a reference to the underlying view
+        self.game_view = game_view
+
+        # Store a semitransparent color to use as an overlay
+        self.fill_color = arcade.make_transparent_color(
+            arcade.color.WHITE, transparency=150
+        )
+
+    def on_draw(self) -> None:
+        """Draw the underlying screen, blurred, then the Game Over text"""
+
+        # Now show the Game Over text
+        self.game_view.on_draw()
+        arcade.draw_text("GAME OVER", constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50,
+                         arcade.color.BLACK, font_size=50, anchor_x="center")
+        arcade.draw_text("ENTER TO PLAY AGAIN", constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2,
+                         arcade.color.BLACK, font_size=25, anchor_x="center")
+        arcade.draw_text("ESC TO EXIT", constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 - 50,
+                         arcade.color.BLACK, font_size=25, anchor_x="center")
+        
+
+    def on_key_press(self, key: int, modifiers: int) -> None:
+        """Resume the game when the user presses ESC again
+
+        Arguments:
+            key -- Which key was pressed
+            modifiers -- What modifiers were active
+        """
+        if key == arcade.key.ENTER:
+            self.game_view.setup()
+            self.window.show_view(self.game_view)
+        if key == arcade.key.ESCAPE:
+            arcade.exit()
