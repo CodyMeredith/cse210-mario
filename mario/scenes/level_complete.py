@@ -1,10 +1,10 @@
 import arcade
 from game import constants
 
-class LossView(arcade.View):
+class LevelCompelteView(arcade.View):
     """Shown when the game is paused"""
 
-    def __init__(self, game_view: arcade.View) -> None:
+    def __init__(self, game_view: arcade.View, endText) -> None:
         """Create the pause screen"""
         # Initialize the parent
         super().__init__()
@@ -17,12 +17,15 @@ class LossView(arcade.View):
             arcade.color.WHITE, transparency=150
         )
 
+        # Store the passed in end game text
+        self.end_text = endText
+
     def on_draw(self) -> None:
         """Draw the underlying screen, blurred, then the Game Over text"""
 
-        # Now show the Game Over text
+        # Show the Level Clear text
         self.game_view.on_draw()
-        arcade.draw_text("GAME OVER", constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50,
+        arcade.draw_text(self.end_text, constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50,
                          arcade.color.BLACK, font_size=50, anchor_x="center")
         arcade.draw_text("ENTER TO PLAY AGAIN", constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2,
                          arcade.color.BLACK, font_size=25, anchor_x="center")
