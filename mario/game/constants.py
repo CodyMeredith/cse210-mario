@@ -10,14 +10,16 @@ SCREEN_TITLE = "Mario"
 TILE_SIZE = 48 # Must be multiple of 16
 CHARACTER_SCALING = TILE_SIZE / 16
 TILE_SCALING = TILE_SIZE / 16
-COIN_SCALING = 0.5
+COIN_SCALING = TILE_SIZE / 16
 SPRITE_PIXEL_SIZE = 128
 GRID_PIXEL_SIZE = SPRITE_PIXEL_SIZE * TILE_SCALING
+PLAYER_START_X = TILE_SIZE
+PLAYER_START_Y = TILE_SIZE * 3 + CHARACTER_SCALING
 
 # Movement speed of player, in pixels per frame
 PLAYER_MOVEMENT_SPEED = TILE_SIZE / 8
 GRAVITY = 1
-PLAYER_JUMP_SPEED = 25
+PLAYER_JUMP_SPEED = 20
 
 # How many pixels to keep as a minimum margin between the character
 # and the edge of the screen.
@@ -28,3 +30,11 @@ TOP_VIEWPORT_MARGIN = 100
 
 #Path
 SPRITE_DIR = Path(__file__).parent.parent / "sprites"
+SOUND_DIR = Path(__file__).parent.parent / "sounds"
+MAP_DIR = Path(__file__).parent.parent / "maps"
+
+# Layer Names from our TileMap
+LAYER_NAME_PLATFORMS = "Platforms"
+LAYER_NAME_COINS = "Coins"
+LAYER_NAME_BACKGROUND = "Scenery"
+LAYER_NAME_DONT_TOUCH = "Don't Touch"
