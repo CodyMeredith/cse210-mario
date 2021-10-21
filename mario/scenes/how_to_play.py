@@ -1,16 +1,15 @@
 import arcade
 from game import constants
-
 from scenes.gameplay import GameplayView
 
 class HowToPlayView(arcade.View):
-    def __init__(self, game_view: arcade.View) -> None:
+    def __init__(self) -> None:
         """Create the Instructions screen"""
         # Initialize the parent
         super().__init__()
 
-        # Store a reference to the underlying view
-        self.game_view = game_view
+        # # Store a reference to the underlying view
+        # self.game_view = game_view
 
     """ Class to manage the how to play view """
     def on_show(self):
@@ -22,7 +21,7 @@ class HowToPlayView(arcade.View):
         arcade.start_render()
         arcade.draw_text("How to Play", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2,
             arcade.color.BLACK, font_size = 40, anchor_x = "center")
-        arcade.draw_text("Use left and right arrow keys to move \nSpacebar to jump \n Press Enter to go back", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2,
+        arcade.draw_text("Use left and right arrow keys to move \nSpacebar to jump \n Press Enter to play", constants.SCREEN_WIDTH/2, constants.SCREEN_HEIGHT/2,
             arcade.color.BLACK, font_size= 20, anchor_x = "center")
 
     def on_key_press(self, key: int, modifiers: int) -> None:
@@ -34,4 +33,5 @@ class HowToPlayView(arcade.View):
         """
         if key == arcade.key.RETURN:
             gameplay_view = GameplayView()
+            gameplay_view.setup()
             self.window.show_view(gameplay_view)
