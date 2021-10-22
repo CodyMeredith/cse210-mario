@@ -31,6 +31,7 @@ class GameplayView(arcade.View):
         self.flag_location = 0
 
         self.collect_coint_sound = arcade.load_sound(constants.SOUND_DIR / "collect_coin.wav")
+        self.pause_sound = arcade.load_sound(constants.SOUND_DIR / "smb_pause.wav")
         self.jump_sound = arcade.load_sound(constants.SOUND_DIR / "jump_small.wav")
         self.gameover_sound = arcade.load_sound(constants.SOUND_DIR / "gameover.wav")
         self.level_clear_sound = arcade.load_sound(constants.SOUND_DIR / "level_clear.wav")
@@ -97,6 +98,7 @@ class GameplayView(arcade.View):
                 arcade.play_sound(self.jump_sound)
         # Did the user want to pause?
         elif key == arcade.key.ESCAPE:
+            arcade.play_sound(self.pause_sound)
             # Pass the current view to preserve this view's state
             pause = PauseView(self)
             self.window.show_view(pause)
