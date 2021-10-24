@@ -40,6 +40,12 @@ Alpha release: Oct 16
 Beta release: Oct 20
 Stable release: Oct 26
 
+Game Assets made available from:
+https://dotstudio.itch.io/super-mario-1-remade-assets?download
+
+Game Sounds made available from:
+https://themushroomkingdom.net/media/smb/wav
+
 Authors:
 *Cody Meredith
 *Rob Hayes

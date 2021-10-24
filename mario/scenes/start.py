@@ -7,7 +7,7 @@ class StartView(arcade.View):
     def __init__(self) -> None:
         super().__init__()
          # Set our display timer
-        self.display_timer = 1.5
+        self.display_timer = 0.5
 
         # Are we showing the instructions?
         self.show_text = False
