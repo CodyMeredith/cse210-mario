@@ -3,6 +3,8 @@ import random
 from game import constants
 from game.player_character import PlayerCharacter
 from game.goomba import Goomba
+from game.coin import Coin
+from game.mushroom import Mushroom
 from scenes.pauseview import PauseView
 from scenes.level_complete import LevelCompelteView
 
@@ -43,9 +45,14 @@ class GameplayView(arcade.View):
 
         self.collect_coint_sound = arcade.load_sound(constants.SOUND_DIR / "collect_coin.wav")
         self.pause_sound = arcade.load_sound(constants.SOUND_DIR / "smb_pause.wav")
-        self.jump_sound = arcade.load_sound(constants.SOUND_DIR / "jump_small.wav")
-        self.gameover_sound = arcade.load_sound(constants.SOUND_DIR / "gameover.wav")
+        self.jump_small_sound = arcade.load_sound(constants.SOUND_DIR / "jump_small.wav")
+        self.jump_big_sound = arcade.load_sound(constants.SOUND_DIR / "jump_big.wav")
+        self.gameover_sound = arcade.load_sound(constants.SOUND_DIR / "mario_die.wav")
         self.level_clear_sound = arcade.load_sound(constants.SOUND_DIR / "level_clear.wav")
+        self.stomp_sound = arcade.load_sound(constants.SOUND_DIR / "stomp.wav")
+        self.bump_sound = arcade.load_sound(constants.SOUND_DIR / "bump.wav")
+        self.powerup_sound = arcade.load_sound(constants.SOUND_DIR / "powerup.wav")
+        self.powerup_appears_sound = arcade.load_sound(constants.SOUND_DIR / "powerup_appears.wav")
     
     def setup(self):
         # Set up the Cameras
@@ -123,7 +130,10 @@ class GameplayView(arcade.View):
         if self.up_pressed and self.physics_engine.can_jump(y_distance = 10) and not self.jump_needs_reset:
             self.player_sprite.change_y = constants.PLAYER_JUMP_SPEED
             self.jump_needs_reset = True
-            arcade.play_sound(self.jump_sound)
+            if self.player_sprite.mario_lives == 0:
+                arcade.play_sound(self.jump_small_sound)
+            else:
+                arcade.play_sound(self.jump_big_sound)
 
         # Process left/right
         if self.right_pressed and not self.left_pressed:
@@ -206,20 +216,55 @@ class GameplayView(arcade.View):
 
         for enemy in enemy_hit_list:
             if self.player_sprite.bottom >= enemy.top - (constants.TILE_SIZE / 2):
+                arcade.play_sound(self.stomp_sound)
                 enemy.death_animation()
-            else:
-                self.player_sprite.death_animation()
-                arcade.play_sound(self.gameover_sound)
-                loss = LevelCompelteView(self, "GAME OVER")
-                self.window.show_view(loss)
+            elif not self.player_sprite.invulnerable:
+                if self.player_sprite.get_mario_lives() > 0:
+                    self.player_sprite.shrink_mario()
+                    arcade.play_sound(self.bump_sound)
+                    self.player_sprite.invulnerable = True
+                else:
+                    self.player_sprite.death_animation()
+                    arcade.play_sound(self.gameover_sound)
+                    loss = LevelCompelteView(self, "GAME OVER")
+                    self.window.show_view(loss)
 
-        # Check to see if player collided with any coins
+        # # Check to see if player collided with any Mystery Boxes
+        for box in self.scene.get_sprite_list(constants.LAYER_NAME_MYSTERY_BOXES):
+            if self.player_sprite.top == box.bottom - 3:
+                if (self.player_sprite.center_x > box.center_x - (constants.TILE_SIZE / 2)) and (self.player_sprite.center_x < box.center_x + (constants.TILE_SIZE / 2)):
+                    rand = random.randint(1, 10)
+                    box.remove_from_sprite_lists()
+
+                    if rand == 1:
+                        arcade.play_sound(self.powerup_appears_sound)
+                        mushroom = Mushroom()
+                        mushroom.center_x = box.center_x
+                        mushroom.center_y = box.center_y + constants.TILE_SIZE
+                        self.scene.add_sprite(constants.LAYER_NAME_MUSHROOMS, mushroom)
+                    else:
+                        arcade.play_sound(self.collect_coint_sound)
+                        coin = Coin()
+                        coin.center_x = box.center_x
+                        coin.center_y = box.center_y + constants.TILE_SIZE + 2
+                        self.scene.add_sprite(constants.LAYER_NAME_COINS, coin)
+
+
+        # Check to see if player collided with any Coins
         coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.scene.get_sprite_list(constants.LAYER_NAME_COINS))
 
         for coin in coin_hit_list:
             coin.remove_from_sprite_lists()
             arcade.play_sound(self.collect_coint_sound)
             self.score += 1
+
+        # Check to see if player collided with any Mushrooms
+        mushroom_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.scene.get_sprite_list(constants.LAYER_NAME_MUSHROOMS))
+
+        for mushroom in mushroom_hit_list:
+            mushroom.remove_from_sprite_lists()
+            arcade.play_sound(self.powerup_sound)
+            self.player_sprite.grow_mario()
 
         # Check if player fell off the map
         if self.player_sprite.top < - 100:
