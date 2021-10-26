@@ -17,7 +17,7 @@ class Goomba(Character):
             self.facing_direction = constants.RIGHT_FACING
 
         # Walking animation
-        if self.change_x > 0:
+        if self.change_x != 0:
             self.current_texture += .05
             if self.current_texture > 2:
                 self.current_texture = 0
@@ -28,3 +28,4 @@ class Goomba(Character):
         self.change_x = 0
         self.hit_box = None
         self.texture = self.fall_texture_pair[self.facing_direction]
+        self.remove_from_sprite_lists()
