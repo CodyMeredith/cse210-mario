@@ -2,7 +2,22 @@ import arcade
 from game import constants
 
 class Coin(arcade.Sprite):
+    """
+    Set up the coin sprite
+
+    Stereotype:
+        Information Holder
+
+    Attributes:
+        TODO    
+    """
     def __init__(self):
+        """
+        The class constructor
+
+        Args:
+            self (Character): an instance of the Character
+        """
         super().__init__()
 
         self.current_texture = 0
@@ -16,6 +31,13 @@ class Coin(arcade.Sprite):
         self.hit_box = self.texture.hit_box_points
 
     def update_animation(self, delta_time: float = 1 / 60):
+        """
+        Coin animation method
+
+        Args:
+            self (Character): an instance of the Character
+            delta_time: time passed since last update        
+        """
         # Coin animation
         self.current_texture += .1
         if self.current_texture > 4:

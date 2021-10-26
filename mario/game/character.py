@@ -2,7 +2,23 @@ import arcade
 from game import constants
 
 class Character(arcade.Sprite):
+    """
+    Sets up the main character player
+
+    Stereotype: 
+        Information Holder
+
+    Attributes:
+        TODO
+    """
     def __init__(self, character_name):
+        """
+        The class constructor
+
+        Args:
+            self (Character): an instance of the Character
+            character_name
+        """
         super().__init__()
 
         # Default to facing right
@@ -19,10 +35,21 @@ class Character(arcade.Sprite):
     def load_texture_pair(directory, filename):
         """
         Load a texture pair, with the second being a mirror image.
+
+        Args:
+            directory: 
+            filename: 
         """
         return [arcade.load_texture(filename), arcade.load_texture(filename, flipped_horizontally=True)]
 
     def load_character_textures(self, character_name):
+        """
+        Load the character textures for movement
+
+        Args: 
+            self: an instance of the Character
+            character_name: the character to be acted upon
+        """
         self.idle_texture_pair = self.load_texture_pair(constants.SPRITE_DIR / f"{character_name}_idle.png")
         self.jump_texture_pair = self.load_texture_pair(constants.SPRITE_DIR / f"{character_name}_jump.png")
         self.fall_texture_pair = self.load_texture_pair(constants.SPRITE_DIR / f"{character_name}_fall.png")

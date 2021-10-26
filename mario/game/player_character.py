@@ -2,9 +2,22 @@ from game import constants
 from game.character import Character
 
 class PlayerCharacter(Character):
-    """Player Sprite"""
+    """Player Sprite
+    
+    Stereotype:
+        Informaiton Holder
+
+    Attributes:
+        TODO
+    """
 
     def __init__(self):
+        """
+        Set up the parent class
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+        """
         # Set up parent class
         self.mario_state = "mario_small"
         self.mario_lives = 0
@@ -16,6 +29,13 @@ class PlayerCharacter(Character):
         self.invulnerable_timer = 5
 
     def update_animation(self, delta_time: float = 1 / 60):
+        """
+        PlayerCharacter animation updates
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+            delta_time:
+        """
         # Figure out if we need to flip face left or right
         if self.change_x < 0 and self.character_face_direction == constants.RIGHT_FACING:
             self.character_face_direction = constants.LEFT_FACING
@@ -45,17 +65,41 @@ class PlayerCharacter(Character):
                 self.invulnerable = False
             
     def death_animation(self):
+        """
+        Animation when PlayerCharacter dies
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+        """
         self.texture = self.fall_texture_pair[self.facing_direction]
     
     def grow_mario(self):
+        """
+        Animation on power up
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+        """
         self.mario_state = "mario_big"
         self.mario_lives = 1
         self.load_character_textures(self.mario_state)
 
     def shrink_mario(self):
+        """
+        Animation for shrinking down to normal size
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+        """
         self.mario_state = "mario_small"
         self.mario_lives = 0
         self.load_character_textures(self.mario_state)
 
     def get_mario_lives(self):
+        """
+        Retrieving the number of lives for PlayerCharacter
+
+        Args:
+            self(PlayerCharacter): an instance of PlayerCharacter
+        """
         return self.mario_lives

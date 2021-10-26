@@ -2,10 +2,24 @@ import arcade
 from game import constants
 
 class PauseView(arcade.View):
-    """Shown when the game is paused"""
+    """
+    Shown when the game is paused
+    
+    Stereotype:
+        Information Holder
+
+    Attributes:
+        TODO
+    """
 
     def __init__(self, game_view: arcade.View) -> None:
-        """Create the pause screen"""
+        """
+        Create the pause screen
+        
+        Args:
+            self (PauseView): an instance of PauseView
+            game_view: a reference to the underlying view
+        """
         # Initialize the parent
         super().__init__()
 
@@ -18,7 +32,11 @@ class PauseView(arcade.View):
         )
 
     def on_draw(self) -> None:
-        """Draw the underlying screen, blurred, then the Paused text"""
+        """Draw the underlying screen, blurred, then the Paused text
+        
+        Args:
+            self (PauseView): an instance of PauseView
+            """
 
         # Now show the Pause text
         self.game_view.on_draw()

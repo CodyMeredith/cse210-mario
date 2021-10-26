@@ -10,19 +10,21 @@ from scenes.level_complete import LevelCompelteView
 
 class GameplayView(arcade.View):
     """
-    
+    Set up the GameplayView scene
+
     Stereotype:
-        
+        Coordinator
 
     Attributes:
-
+        TODO
     """
 
     def __init__(self):
-        """The class constructor.
+        """
+        The class constructor
         
         Args:
-
+            self (GameplayView): an instance of GameplayView
         """
         super().__init__()
 
@@ -55,6 +57,12 @@ class GameplayView(arcade.View):
         self.powerup_appears_sound = arcade.load_sound(constants.SOUND_DIR / "powerup_appears.wav")
     
     def setup(self):
+        """
+        Set up the cameras, import the map, initiate variables, set up Mario and enemies and physics engine
+
+        Args:
+            self (GameplayView): an instance of GameplayView
+        """
         # Set up the Cameras
         self.camera = arcade.Camera(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
         self.gui_camera = arcade.Camera(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
@@ -109,11 +117,20 @@ class GameplayView(arcade.View):
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, [self.scene.get_sprite_list(constants.LAYER_NAME_PLATFORMS), self.scene.get_sprite_list(constants.LAYER_NAME_OBJECTS)], constants.GRAVITY)
 
     def on_show(self):
-        """ Called when switching to this view"""
+        """
+        Called when switching to this view
+        
+        Args:
+            self (GameplayView): an instance of GameplayView
+        """
         arcade.set_background_color(arcade.csscolor.SKY_BLUE)
 
     def on_draw(self):
-        """Render the screen."""
+        """Render the screen.
+        
+        Args:
+            self (GameplayView): an instance of GameplayView
+        """
         arcade.start_render()
         self.camera.use()
         self.scene.draw(pixelated = True)
@@ -125,6 +142,9 @@ class GameplayView(arcade.View):
     def process_keychange(self):
         """
         Called when we change a key up/down or we move on/off a ladder.
+
+        Args:
+            self (GameplayView): an instance of GameplayView
         """
         # Process jump
         if self.up_pressed and self.physics_engine.can_jump(y_distance = 10) and not self.jump_needs_reset:
@@ -144,7 +164,13 @@ class GameplayView(arcade.View):
             self.player_sprite.change_x = 0
 
     def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed."""
+        """Called whenever a key is pressed.
+        
+        Args:
+            self (GameplayView): an instance of GameplayView
+            key:
+            modifiers: what modifiers were active
+        """
 
         if key == arcade.key.SPACE:
             self.up_pressed = True
@@ -162,7 +188,11 @@ class GameplayView(arcade.View):
         self.process_keychange()
 
     def on_key_release(self, key, modifiers):
-        """Called when the user releases a key."""
+        """Called when the user releases a key.
+        
+        Args:
+            self (GameplayView): an instance of GameplayView
+        """
 
         if key == arcade.key.SPACE:
             self.up_pressed = False
@@ -175,6 +205,12 @@ class GameplayView(arcade.View):
         self.process_keychange()
 
     def ceneter_camera_to_player(self):
+        """
+        Center the screen on the current player
+
+        Args:
+            self (GameplayView): an instance of GameplayView
+        """
         screen_center_x = self.player_sprite.center_x - (self.camera.viewport_width / 2)
         screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
 
@@ -187,7 +223,13 @@ class GameplayView(arcade.View):
         self.camera.move_to(player_centered)
 
     def on_update(self, delta_time):
-        """Movement and game logic"""
+        """
+        Movement and game logic
+        
+        Args:
+            self (GameplayView): an instance of GameplayView
+            delta_time: time passed since last update
+        """
 
         # Move the player with the physics engine
         self.physics_engine.update()

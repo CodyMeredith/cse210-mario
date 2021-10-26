@@ -2,10 +2,21 @@ import arcade
 from game import constants
 
 class LevelCompelteView(arcade.View):
-    """Shown when the game is paused"""
+    """
+    Shown when the game is paused
+    
+    Stereotype:
+        Information Holder
+
+    """
 
     def __init__(self, game_view: arcade.View, endText) -> None:
-        """Create the pause screen"""
+        """
+        Create the pause screen
+        
+        Args:
+            self (LevelCompleteView): an instance of LevelCompleteView
+        """
         # Initialize the parent
         super().__init__()
 
@@ -21,7 +32,12 @@ class LevelCompelteView(arcade.View):
         self.end_text = endText
 
     def on_draw(self) -> None:
-        """Draw the underlying screen, blurred, then the Game Over text"""
+        """
+        Draw the underlying screen, blurred, then the Game Over text
+        
+        Args:
+            self (LevelCompleteView): an instance of LevelCompleteView
+        """
 
         # Show the Level Clear text
         self.game_view.on_draw()

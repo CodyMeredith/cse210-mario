@@ -3,8 +3,21 @@ from game import constants
 from scenes.gameplay import GameplayView
 
 class StartView(arcade.View):
-    """ Class that manages the 'menu' view. """
+    """ Class that manages the 'menu' view. 
+    
+    Stereotype:
+        Information Holder
+
+    Attributes:
+        TODO
+    """
     def __init__(self) -> None:
+        """
+        Class constructor
+
+        Args:
+            self (StartView): an instance of StartView
+        """
         super().__init__()
          # Set our display timer
         self.display_timer = 0.5
@@ -14,7 +27,11 @@ class StartView(arcade.View):
         self.show_instructions = False
 
     def on_show(self):
-        """ Called when switching to this view"""
+        """ Called when switching to this view
+        
+        Args:
+            self (StartView): an instance of StartView
+        """
         arcade.set_background_color(arcade.color.SKY_BLUE)
         # Find the title image in the images folder
         title_image_path = constants.SPRITE_DIR / "SMB_logo.png"
@@ -26,6 +43,12 @@ class StartView(arcade.View):
         self.show_instructions = False
 
     def on_draw(self):
+        """
+        Render the screen
+
+        Args:
+            self (StartView): an instance of StartView
+        """
 
         # Start the rendering loop
         arcade.start_render()
